@@ -50,11 +50,17 @@ function validaChances(tentativa){
         jogada.focus() //setando o foco na caixa de texto
     }
 
+    else if(numerosJogados.includes(tentativa)){
+        alert('Atenção!! O número informado já foi jogado.')
+        jogada.value = ''
+        jogada.focus()
+    }
+
     else{
         numerosJogados.push(tentativa) //empurrando um elemento para o vetor
         if(minhasJogadas === 6 && tentativa !== randomNumber){
             displayTentativas(tentativa) //função
-            msg(`GameOver !! <br> O número correto era + ${randomNumber}`)
+            msg(`GameOver !! <br> O número correto era + ${randomNumber}`) //função
             fimJogo() //função 
         }
         else{
@@ -91,3 +97,33 @@ function displayTentativas(tentativa){
     function msg(texto){
         avisos.innerHTML = `<h1>${texto}</h1>`
     }
+
+function fimJogo(){
+    jogada.value = ''
+    jogada.setAttribute('disabled' , '')
+    submit.setAttribute('disabled' , '')
+    p.classList.add('button') //adicione um estilo para o botão
+    p.innerHTML= '<h1 id= "iniciarJogada">Iniciar o jogo</h1>'
+    recomecar.appendChild(p)
+    playGame = false
+    iniciarJogo()
+
+}
+
+function iniciarJogo(){
+    const botaoIniciar = document.querySelector('#iniciarJogada')
+    botaoIniciar.addEventListener('click',function(){
+        randomNumber = parseInt(Math.random()*100+1)
+        numerosJogados = []
+        minhasJogadas = 1
+        jogadaAnterior.innerHTML = ''
+        avisos.innerHTML = ''
+        jogadasRestantes.innerHTML= `${7 - minhasJogadas}`
+        jogada.removeAttribute('disabled', '')
+        submit.removeAttribute('disabled', '')
+        recomecar.removeChild(p)
+        playGame = true
+    })
+}
+
+
